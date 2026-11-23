@@ -1,34 +1,89 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07111f"><title>JARVIS v0.4</title><style>
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#153b55,#07111f 62%);color:#eaf8ff;font:16px system-ui}main{max-width:760px;margin:auto;padding:16px}header{text-align:center;padding:18px 8px}.orb{width:88px;height:88px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 25px #35dfff55}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}.panel{background:#0b1a29;border:1px solid #163954;border-radius:16px;padding:14px;margin:13px 0}h2{font-size:12px;letter-spacing:2px;color:#62e7ff;margin:0 0 12px}#chat{height:30vh;min-height:210px;overflow:auto;display:flex;flex-direction:column;gap:9px}.msg{padding:11px 13px;border-radius:12px;max-width:92%;font-size:14px;white-space:pre-wrap;line-height:1.5}.bot{background:#10283a;align-self:flex-start}.user{background:#123b50;align-self:flex-end}.controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.tilegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tilegrid button{min-height:54px}.note{padding:8px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.clock{font-size:26px;font-variant-numeric:tabular-nums}.status{min-height:18px}
-</style></head><body><main>
-<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.4</div></header>
-<section class="panel"><h2>LIVE SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
-<section class="panel"><h2>LOCAL ASSISTANT</h2><div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.4 is ready. Try “help”, “calculate 25 * 4”, “remember that …”, “recall”, or “open YouTube”.</div></div><div class="controls"><input id="entry" placeholder="Type or dictate a command…" autocomplete="off"><button id="send" class="primary">Send</button></div><div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">If browser voice input is unavailable, use your Android keyboard microphone.</p></section>
-<section class="panel"><h2>QUICK TOOLS</h2><div class="tilegrid"><button data-command="what time is it">🕒 Tell me the time</button><button data-command="what is today's date">📅 Today's date</button><button data-command="calculate 125 / 5">🧮 Sample calculation</button><button data-command="help">❔ Show commands</button></div></section>
-<section class="panel"><h2>WEBSITE LAUNCHER</h2><div class="tilegrid"><button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button></div><p class="small">These buttons open public websites in a new browser tab.</p></section>
-<section class="panel"><h2>PHONE MEMORY</h2><div id="notes" class="small">No saved notes.</div><button id="clear" class="full">Clear saved notes</button><p class="small">Notes are stored in this browser on this device. Do not save passwords or other sensitive information.</p></section>
-<section class="panel"><h2>ABOUT THE AI BRIDGE</h2><p class="small">This free version uses local commands; it is not connected to an AI model. The ChatGPT button opens ChatGPT separately. A real AI connection needs a secure server and an authorized API setup.</p></section>
-</main><script>
-const $=s=>document.querySelector(s),chat=$('#chat');let notes=JSON.parse(localStorage.getItem('jarvis_notes_v3')||'[]'),lastReply='JARVIS v0.4 is ready.';
-function add(t,r){let e=document.createElement('div');e.className='msg '+r;e.textContent=t;chat.appendChild(e);chat.scrollTop=chat.scrollHeight}
-function renderNotes(){let b=$('#notes');b.replaceChildren();if(!notes.length){b.textContent='No saved notes.';return}notes.forEach((n,i)=>{let d=document.createElement('div');d.className='note';d.textContent=(i+1)+'. '+n;b.appendChild(d)})}
-function tick(){let d=new Date();$('#clock').textContent=d.toLocaleTimeString();$('#today').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}setInterval(tick,1000);tick();
-function calc(s){s=s.replace(/,/g,'').replace(/\s+/g,'');if(!s||!/^[0-9.+\-*/()%]+$/.test(s))throw Error('Use numbers and +, -, *, /, %, and parentheses only.');let i=0;function f(){if(s[i]==='+'){i++;return f()}if(s[i]==='-'){i++;return-f()}if(s[i]==='('){i++;let v=a();if(s[i++]!==')')throw Error('Check your parentheses.');return v}let st=i;while(i<s.length&&/[0-9.]/.test(s[i]))i++;if(st===i)throw Error('I could not read that number.');let v=Number(s.slice(st,i));if(!Number.isFinite(v))throw Error('Invalid number.');return v}function t(){let v=f();while(['*','/','%'].includes(s[i])){let o=s[i++],b=f();if((o==='/'||o==='%')&&b===0)throw Error('Division by zero is not allowed.');v=o==='*'?v*b:o==='/'?v/b:v%b}return v}function a(){let v=t();while(s[i]==='+'||s[i]==='-'){let o=s[i++],b=t();v=o==='+'?v+b:v-b}return v}let v=a();if(i!==s.length||!Number.isFinite(v))throw Error('I could not calculate that expression.');return Number(v.toPrecision(12))}
-function respond(q){let l=q.toLowerCase(),a;if(l==='help'||l.includes('what can you do'))a='I can tell time and date, calculate arithmetic, save and recall notes, speak replies, and open Google, YouTube, Wikipedia, or ChatGPT. I do not have a connected AI brain in this free version.';
-else if(l.startsWith('remember that ')){let n=q.slice(14).trim();if(n){notes.push(n);localStorage.setItem('jarvis_notes_v3',JSON.stringify(notes));renderNotes();a='Saved on this phone: '+n}else a='Tell me what to remember.'}
-else if(l==='recall'||l.includes('what do you remember'))a=notes.length?'Your saved notes: '+notes.join('; '):'You have no saved notes yet.';
-else if(l.includes('time'))a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
-else if(l.includes('date')||l.includes('day is it'))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
-else if(l.startsWith('calculate ')||l.startsWith('what is ')){let e=q.replace(/^calculate\s+/i,'').replace(/^what is\s+/i,'').replace(/[?=]$/,'');try{a='The answer is '+calc(e)+'.'}catch(x){a=x.message+' Example: calculate 12 * (3 + 2).'}}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f"><title>JARVIS v0.5</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#16445e,#07111f 65%);color:#eaf8ff;font:16px system-ui}main{max-width:780px;margin:auto;padding:15px}
+header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 28px #35dfff66}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}
+.panel{background:#0b1a29;border:1px solid #1b4962;border-radius:17px;padding:14px;margin:13px 0;box-shadow:0 8px 25px #0002}h2{font-size:12px;letter-spacing:2px;color:#62e7ff;margin:0 0 12px}
+#chat{height:31vh;min-height:220px;overflow:auto;display:flex;flex-direction:column;gap:9px}.msg{padding:11px 13px;border-radius:13px;max-width:93%;font-size:14px;white-space:pre-wrap;line-height:1.5}.bot{background:#10283a;align-self:flex-start}.user{background:#123b50;align-self:flex-end}
+.controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid button{min-height:52px}.clock{font-size:25px;font-variant-numeric:tabular-nums}.item{padding:9px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.row{display:flex;gap:8px;align-items:center}.row button{white-space:nowrap}.status{min-height:18px}.hint{color:#a9c0d0;font-size:12px}.pill{display:inline-block;border:1px solid #28647c;border-radius:99px;padding:3px 8px;color:#83eaff;font-size:11px}
+</style></head>
+<body><main>
+<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.5</div><p class="pill">SMARTER LOCAL COMMANDS</p></header>
+
+<section class="panel"><h2>SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
+
+<section class="panel"><h2>SMART ASSISTANT</h2>
+<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.5 is online. I understand more ways of asking about time, dates, calculations, notes and tasks. Type “help” to see examples.</div></div>
+<div class="controls"><input id="entry" placeholder="Ask JARVIS or type a command…" autocomplete="off"><button id="send" class="primary">Send</button></div>
+<div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">Voice input depends on your browser. Android keyboard dictation is another option.</p>
+</section>
+
+<section class="panel"><h2>QUICK COMMANDS</h2><div class="grid">
+<button data-q="What time is it?">🕒 Time</button><button data-q="What's today's date?">📅 Date</button>
+<button data-q="Can you calculate 125 divided by 5?">🧮 Calculator</button><button data-q="Help">❔ Help</button>
+<button data-q="Show my notes">📝 My notes</button><button data-q="Show my tasks">✅ My tasks</button>
+</div><p class="hint">Try: “make a note that buy a notebook”, “add task finish homework”, “find note notebook”, “what is 18 percent of 250”.</p></section>
+
+<section class="panel"><h2>PHONE MEMORY · NOTES</h2><div id="notes" class="small">No saved notes.</div><button id="clearNotes" class="full">Clear all notes</button><p class="small">Notes stay in this browser on this device. Do not store passwords or sensitive information.</p></section>
+
+<section class="panel"><h2>MY TASKS</h2><div id="tasks" class="small">No tasks yet.</div><button id="clearTasks" class="full">Clear completed tasks</button></section>
+
+<section class="panel"><h2>WEBSITE LAUNCHER</h2><div class="grid">
+<button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button>
+</div></section>
+
+<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.5 uses improved local command matching and a safe calculator, notes and task list. It is not connected to a generative AI model and cannot answer every open-ended question. A real AI connection requires a secure server and an authorized API setup.</p></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),chat=$('#chat');
+let notes=JSON.parse(localStorage.getItem('jarvis_notes_v3')||'[]');
+let tasks=JSON.parse(localStorage.getItem('jarvis_tasks_v5')||'[]');
+let lastReply='JARVIS v0.5 is online.';
+function addMsg(t,role){const e=document.createElement('div');e.className='msg '+role;e.textContent=t;chat.appendChild(e);chat.scrollTop=chat.scrollHeight}
+function saveNotes(){localStorage.setItem('jarvis_notes_v3',JSON.stringify(notes));renderNotes()}
+function saveTasks(){localStorage.setItem('jarvis_tasks_v5',JSON.stringify(tasks));renderTasks()}
+function renderNotes(){const b=$('#notes');b.replaceChildren();if(!notes.length){b.textContent='No saved notes.';return}notes.forEach((n,i)=>{const d=document.createElement('div');d.className='item';d.textContent=(i+1)+'. '+n;b.appendChild(d)})}
+function renderTasks(){const b=$('#tasks');b.replaceChildren();if(!tasks.length){b.textContent='No tasks yet.';return}tasks.forEach((t,i)=>{const d=document.createElement('div');d.className='item row';const c=document.createElement('input');c.type='checkbox';c.checked=!!t.done;c.style.flex='0 0 auto';c.onchange=()=>{tasks[i].done=c.checked;saveTasks()};const s=document.createElement('span');s.style.flex='1';s.textContent=t.text; if(t.done)s.style.textDecoration='line-through';const x=document.createElement('button');x.textContent='Delete';x.onclick=()=>{tasks.splice(i,1);saveTasks()};d.append(c,s,x);b.appendChild(d)})}
+function tick(){const d=new Date();$('#clock').textContent=d.toLocaleTimeString();$('#today').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}setInterval(tick,1000);tick();
+
+// A small arithmetic parser: no eval(), variables, functions, or code execution.
+function calculate(expr){const s=expr.replace(/,/g,'').replace(/\s+/g,'');if(!s||!/^[0-9.+\-*/()%]+$/.test(s))throw Error('Use numbers, parentheses and +, -, *, / or %.');let i=0;
+function factor(){if(s[i]==='+'){i++;return factor()}if(s[i]==='-'){i++;return-factor()}if(s[i]==='('){i++;const v=addSub();if(s[i]!==')')throw Error('Please check the parentheses.');i++;return v}const st=i;while(i<s.length&&/[0-9.]/.test(s[i]))i++;if(st===i)throw Error('I could not read that number.');const v=Number(s.slice(st,i));if(!Number.isFinite(v))throw Error('That number is invalid.');return v}
+function term(){let v=factor();while(['*','/','%'].includes(s[i])){const op=s[i++],b=factor();if((op==='/'||op==='%')&&b===0)throw Error('Division by zero is not allowed.');v=op==='*'?v*b:op==='/'?v/b:v%b}return v}
+function addSub(){let v=term();while(s[i]==='+'||s[i]==='-'){const op=s[i++],b=term();v=op==='+'?v+b:v-b}return v}
+const v=addSub();if(i!==s.length||!Number.isFinite(v))throw Error('I could not calculate that expression.');return Number(v.toPrecision(12))}
+function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[?!.,]/g,' ').replace(/\s+/g,' ').trim()}
+function respond(raw){const q=raw.trim(),l=norm(q);let a='';
+if(!q)return;
+if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.5 is ready. What would you like me to do?';
+else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do:\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Notes: “remember that …”, “make a note …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”, “delete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use local commands, not a connected AI model.';
+else if(/^(what time|tell me the time|current time|time please|what's the time)/.test(l)||l==='time')a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
+else if(/(today'?s date|what date|what day|which day|date today)/.test(l))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
+else if(l.startsWith('remember that ')||l.startsWith('remember ')||l.startsWith('make a note ')||l.startsWith('add a note ')||l.startsWith('note that ')){let n=q.replace(/^(remember that|remember|make a note|add a note|note that)\s*/i,'').trim();if(n){notes.push(n);saveNotes();a='Saved a note on this phone: '+n}else a='Tell me what you want saved. For example: “remember that my project is JARVIS”.'}
+else if(l==='recall'||l.includes('show my notes')||l.includes('list my notes')||l.includes('what do you remember'))a=notes.length?'Here are your saved notes:\n'+notes.map((n,i)=>(i+1)+'. '+n).join('\n'):'You have no saved notes yet.';
+else if(l.startsWith('find note ')||l.startsWith('search notes for ')){const term=l.replace(/^find note |^search notes for /,'');const found=notes.filter(n=>n.toLowerCase().includes(term));a=found.length?'I found:\n'+found.map((n,i)=>(i+1)+'. '+n).join('\n'):'I could not find a note containing “'+term+'”.'}
+else if(l.startsWith('add task ')||l.startsWith('create task ')||l.startsWith('remind me to ')){const t=q.replace(/^(add task|create task|remind me to)\s*/i,'').trim();if(t){tasks.push({text:t,done:false});saveTasks();a='Added to your task list: '+t+'. You can see it under MY TASKS.'}else a='What task should I add?'}
+else if(l==='show my tasks'||l==='list tasks'||l==='my tasks'||l==='tasks')a=tasks.length?'Your tasks:\n'+tasks.map((t,i)=>(i+1)+'. '+(t.done?'[done] ':'[ ] ')+t.text).join('\n'):'You have no tasks yet.';
+else if(l.startsWith('complete task ')){const n=parseInt(l.replace('complete task ',''),10)-1;if(Number.isInteger(n)&&tasks[n]){tasks[n].done=true;saveTasks();a='Marked task '+(n+1)+' as complete.'}else a='I could not find that task number. Say “show my tasks” to see the list.'}
+else if(l.startsWith('delete task ')){const n=parseInt(l.replace('delete task ',''),10)-1;if(Number.isInteger(n)&&tasks[n]){const old=tasks.splice(n,1)[0];saveTasks();a='Deleted task: '+old.text}else a='I could not find that task number.'}
+else if(/^(calculate|what is|what's|whats|how much is|solve)\b/.test(l)){let e=q.replace(/^(calculate|what is|what's|whats|how much is|solve)\s*/i,'').replace(/[?=]$/,'').trim();e=e.replace(/\b(times|multiplied by)\b/gi,'*').replace(/\b(divided by|over)\b/gi,'/').replace(/\b(plus|added to)\b/gi,'+').replace(/\b(minus)\b/gi,'-').replace(/\bpercent of\b/gi,'%OF%');if(e.includes('%OF%')){const p=e.split('%OF%');try{a='The answer is '+(calculate(p[0])/100*calculate(p[1]))+'.'}catch(err){a=err.message}}else{try{a='The answer is '+calculate(e)+'.'}catch(err){a=err.message+' Example: “calculate 12 times (3 plus 2)” is not supported with words inside brackets; use “calculate 12 * (3 + 2)”.'}}}
 else if(l.includes('open youtube')){window.open('https://www.youtube.com/','_blank','noopener');a='Opening YouTube.'}
 else if(l.includes('open google')){window.open('https://www.google.com/','_blank','noopener');a='Opening Google.'}
 else if(l.includes('open wikipedia')){window.open('https://www.wikipedia.org/','_blank','noopener');a='Opening Wikipedia.'}
-else if(l.includes('open chatgpt')){window.open('https://chatgpt.com/','_blank','noopener');a='Opening ChatGPT in a separate tab.'}
-else a='I do not know that command yet. Type “help” to see what I can do, or use the website launcher.';lastReply=a;add(a,'bot')}
-function send(){let q=$('#entry').value.trim();if(!q)return;$('#entry').value='';add(q,'user');respond(q)}$('#send').onclick=send;$('#entry').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
-document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>{add(b.dataset.command,'user');respond(b.dataset.command)});
+else if(l.includes('open chatgpt')){window.open('https://chatgpt.com/','_blank','noopener');a='Opening ChatGPT.'}
+else if(l.includes('thank you')||l==='thanks')a='You are welcome. Ready for your next command.';
+else a='I do not understand that request yet. Try asking in a different way, or type “help” to see my supported commands. I am a local assistant and do not have a full AI brain connected.';
+lastReply=a;addMsg(a,'bot')}
+function send(){const q=$('#entry').value.trim();if(!q)return;$('#entry').value='';addMsg(q,'user');respond(q)}
+$('#send').onclick=send;$('#entry').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const q=b.dataset.q;addMsg(q,'user');respond(q)});
 document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>window.open(b.dataset.url,'_blank','noopener'));
-$('#speak').onclick=()=>{if(!('speechSynthesis'in window)){$('#voiceStatus').textContent='Speech output is not supported in this browser.';return}speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(lastReply));$('#voiceStatus').textContent='Speaking the latest JARVIS reply.'};
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;$('#listen').onclick=()=>{if(!SR){$('#voiceStatus').textContent='Browser voice recognition is not supported. Use Android keyboard dictation.';return}try{let r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;r.onstart=()=>$('#voiceStatus').textContent='Listening…';r.onresult=e=>{$('#entry').value=e.results[0][0].transcript;$('#voiceStatus').textContent='Speech captured. Tap Send.'};r.onerror=e=>$('#voiceStatus').textContent='Voice input issue: '+e.error+'. Check microphone permission or use keyboard dictation.';r.start()}catch(e){$('#voiceStatus').textContent='Could not start voice input. Check microphone permission.'}};
-$('#clear').onclick=()=>{if(confirm('Clear all JARVIS notes stored in this browser?')){notes=[];localStorage.removeItem('jarvis_notes_v3');renderNotes()}};renderNotes();
+$('#speak').onclick=()=>{if(!('speechSynthesis'in window)){$('#voiceStatus').textContent='Speech output is not supported in this browser.';return}speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(lastReply));$('#voiceStatus').textContent='Speaking the latest reply.'};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;$('#listen').onclick=()=>{if(!SR){$('#voiceStatus').textContent='Browser voice recognition is unavailable. Try your Android keyboard microphone.';return}try{const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;r.onstart=()=>$('#voiceStatus').textContent='Listening…';r.onresult=e=>{$('#entry').value=e.results[0][0].transcript;$('#voiceStatus').textContent='Speech captured. Tap Send.'};r.onerror=e=>$('#voiceStatus').textContent='Voice input issue: '+e.error+'. Check microphone permission or use keyboard dictation.';r.start()}catch(e){$('#voiceStatus').textContent='Could not start voice input. Check microphone permission.'}};
+$('#clearNotes').onclick=()=>{if(confirm('Clear all saved notes on this browser?')){notes=[];saveNotes()}};
+$('#clearTasks').onclick=()=>{if(confirm('Remove completed tasks?')){tasks=tasks.filter(t=>!t.done);saveTasks()}};
+renderNotes();renderTasks();
 </script></body></html>

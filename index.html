@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f"><title>JARVIS v0.5</title>
+<meta name="theme-color" content="#07111f"><title>JARVIS v0.6 Offline Smart Mode</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#16445e,#07111f 65%);color:#eaf8ff;font:16px system-ui}main{max-width:780px;margin:auto;padding:15px}
 header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 28px #35dfff66}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}
@@ -11,12 +11,12 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 .controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid button{min-height:52px}.clock{font-size:25px;font-variant-numeric:tabular-nums}.item{padding:9px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.row{display:flex;gap:8px;align-items:center}.row button{white-space:nowrap}.status{min-height:18px}.hint{color:#a9c0d0;font-size:12px}.pill{display:inline-block;border:1px solid #28647c;border-radius:99px;padding:3px 8px;color:#83eaff;font-size:11px}
 </style></head>
 <body><main>
-<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.5</div><p class="pill">SMARTER LOCAL COMMANDS</p></header>
+<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.6</div><p class="pill">OFFLINE SMART MODE</p></header>
 
 <section class="panel"><h2>SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
 
 <section class="panel"><h2>SMART ASSISTANT</h2>
-<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.5 is online. I understand more ways of asking about time, dates, calculations, notes and tasks. Type “help” to see examples.</div></div>
+<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.6 Offline Smart Mode is online. I can chat using built-in knowledge, explain selected topics, and manage your notes and tasks. Type “help” to see examples.</div></div>
 <div class="controls"><input id="entry" placeholder="Ask JARVIS or type a command…" autocomplete="off"><button id="send" class="primary">Send</button></div>
 <div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">Voice input depends on your browser. Android keyboard dictation is another option.</p>
 </section>
@@ -35,7 +35,7 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button>
 </div></section>
 
-<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.5 uses improved local command matching and a safe calculator, notes and task list. It is not connected to a generative AI model and cannot answer every open-ended question. A real AI connection requires a secure server and an authorized API setup.</p></section>
+<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.6 adds offline conversational patterns and a small built-in knowledge guide, plus the v0.5 calculator, notes and tasks. It is not a generative AI model and cannot answer every open-ended question. No questions are sent to an AI service.</p></section>
 </main>
 <script>
 const $=s=>document.querySelector(s),chat=$('#chat');
@@ -59,7 +59,7 @@ function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[?!.,]/g
 function respond(raw){const q=raw.trim(),l=norm(q);let a='';
 if(!q)return;
 if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.5 is ready. What would you like me to do?';
-else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do:\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Notes: “remember that …”, “make a note …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”, “delete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use local commands, not a connected AI model.';
+else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: “explain artificial intelligence”, “what is gravity?”, “tell me about photosynthesis”\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use built-in offline responses, not a connected AI model.';
 else if(/^(what time|tell me the time|current time|time please|what's the time)/.test(l)||l==='time')a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
 else if(/(today'?s date|what date|what day|which day|date today)/.test(l))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
 else if(l.startsWith('remember that ')||l.startsWith('remember ')||l.startsWith('make a note ')||l.startsWith('add a note ')||l.startsWith('note that ')){let n=q.replace(/^(remember that|remember|make a note|add a note|note that)\s*/i,'').trim();if(n){notes.push(n);saveNotes();a='Saved a note on this phone: '+n}else a='Tell me what you want saved. For example: “remember that my project is JARVIS”.'}
@@ -75,7 +75,23 @@ else if(l.includes('open google')){window.open('https://www.google.com/','_blank
 else if(l.includes('open wikipedia')){window.open('https://www.wikipedia.org/','_blank','noopener');a='Opening Wikipedia.'}
 else if(l.includes('open chatgpt')){window.open('https://chatgpt.com/','_blank','noopener');a='Opening ChatGPT.'}
 else if(l.includes('thank you')||l==='thanks')a='You are welcome. Ready for your next command.';
-else a='I do not understand that request yet. Try asking in a different way, or type “help” to see my supported commands. I am a local assistant and do not have a full AI brain connected.';
+
+else if(/^(how are you|how are you doing|are you okay)$/.test(l))a='I am running normally and ready to help. I work offline in this version, so I use built-in knowledge and commands.';
+else if(/^(who are you|what are you|introduce yourself)$/.test(l))a='I am JARVIS, your personal mobile assistant. In v0.6 Offline Smart Mode, I can handle selected questions, explain a few topics, calculate, save notes, manage tasks and open useful websites.';
+else if(/^(who made you|who created you|who is your creator)$/.test(l))a='You are building and customizing this JARVIS project. I am the assistant software running in your browser.';
+else if(l.includes('are you real')||l.includes('are you human'))a='I am software, not a human. I run as a webpage on your phone.';
+else if(l.includes('thank you')||l==='thanks')a='You are welcome. Ready for your next command.';
+else if(l.includes('what is artificial intelligence')||l.includes('explain artificial intelligence')||l.includes('define artificial intelligence')||l==='what is ai')a='Artificial intelligence (AI) is technology that helps computers do tasks that usually need human-like skills, such as understanding language, recognizing patterns, solving problems and making predictions. AI tools learn patterns from data; they do not think or feel exactly like people.';
+else if(l.includes('what is machine learning')||l.includes('explain machine learning'))a='Machine learning is a type of AI where a computer system learns patterns from examples or data and uses those patterns to make predictions or decisions. For example, it can learn to recognize pictures of cats after training on many labeled images.';
+else if(l.includes('what is gravity')||l.includes('explain gravity'))a='Gravity is the force of attraction between objects that have mass. Earth’s gravity pulls objects toward the ground and keeps the Moon moving around Earth.';
+else if(l.includes('what is photosynthesis')||l.includes('explain photosynthesis'))a='Photosynthesis is the process green plants use to make food. They use sunlight, water and carbon dioxide to produce sugar and release oxygen.';
+else if(l.includes('what is a computer')||l.includes('explain computer'))a='A computer is an electronic device that takes input, processes information, stores data and produces output. A phone is also a small, powerful computer.';
+else if(l.includes('capital of india')||l.includes('what is india capital'))a='The capital of India is New Delhi.';
+else if(l.includes('what is internet')||l.includes('explain internet'))a='The internet is a worldwide network that connects computers and devices so they can share information and communicate.';
+else if(l.includes('what is water cycle')||l.includes('explain water cycle'))a='The water cycle is the continuous movement of water between Earth’s surface and the atmosphere. Its main stages include evaporation, condensation, precipitation and collection.';
+else if(l.startsWith('explain ')||l.startsWith('tell me about ')||l.startsWith('what is ')||l.startsWith('who is '))a='I do not have a built-in explanation for that topic yet. I am running offline, so I cannot look it up. Try “help” for topics I know, or connect a real AI model later through a secure backend.';
+
+else a='I do not understand that request yet. Try asking in a different way, or type “help” to see my supported commands. I am running in offline mode and do not have a full AI brain connected.';
 lastReply=a;addMsg(a,'bot')}
 function send(){const q=$('#entry').value.trim();if(!q)return;$('#entry').value='';addMsg(q,'user');respond(q)}
 $('#send').onclick=send;$('#entry').addEventListener('keydown',e=>{if(e.key==='Enter')send()});

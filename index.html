@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f"><title>JARVIS v0.7 Personal Memory</title>
+<meta name="theme-color" content="#07111f"><title>JARVIS v0.8 Knowledge Upgrade</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#16445e,#07111f 65%);color:#eaf8ff;font:16px system-ui}main{max-width:780px;margin:auto;padding:15px}
 header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 28px #35dfff66}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}
@@ -11,12 +11,12 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 .controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid button{min-height:52px}.clock{font-size:25px;font-variant-numeric:tabular-nums}.item{padding:9px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.row{display:flex;gap:8px;align-items:center}.row button{white-space:nowrap}.status{min-height:18px}.hint{color:#a9c0d0;font-size:12px}.pill{display:inline-block;border:1px solid #28647c;border-radius:99px;padding:3px 8px;color:#83eaff;font-size:11px}
 </style></head>
 <body><main>
-<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.7</div><p class="pill">OFFLINE SMART MODE</p></header>
+<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.8</div><p class="pill">OFFLINE SMART MODE</p></header>
 
 <section class="panel"><h2>SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
 
 <section class="panel"><h2>SMART ASSISTANT</h2>
-<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.7 Personal Memory is online. I can chat using built-in knowledge, explain selected topics, and manage your notes and tasks. Type “help” to see examples.</div></div>
+<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.8 Knowledge Upgrade is online. I know more offline topics and can still manage your notes, tasks and personal memory. Type “help” for examples.</div></div>
 <div class="controls"><input id="entry" placeholder="Ask JARVIS or type a command…" autocomplete="off"><button id="send" class="primary">Send</button></div>
 <div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">Voice input depends on your browser. Android keyboard dictation is another option.</p>
 </section>
@@ -24,7 +24,7 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <section class="panel"><h2>QUICK COMMANDS</h2><div class="grid">
 <button data-q="What time is it?">🕒 Time</button><button data-q="What's today's date?">📅 Date</button>
 <button data-q="Can you calculate 125 divided by 5?">🧮 Calculator</button><button data-q="Help">❔ Help</button>
-<button data-q="Show my notes">📝 My notes</button><button data-q="Show memory">🧠 Memory</button><button data-q="Show my tasks">✅ My tasks</button>
+<button data-q="Show my notes">📝 My notes</button><button data-q="Show memory">🧠 Memory</button><button data-q="Show my tasks">✅ My tasks</button><button data-q="Explain internet safety">🛡 Internet safety</button>
 </div><p class="hint">Try: “make a note that buy a notebook”, “add task finish homework”, “find note notebook”, “what is 18 percent of 250”.</p></section>
 
 <section class="panel"><h2>PHONE MEMORY · NOTES</h2><div id="notes" class="small">No saved notes.</div><button id="clearNotes" class="full">Clear all notes</button><p class="small">Notes stay in this browser on this device. Do not store passwords or sensitive information.</p></section>
@@ -37,14 +37,14 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button>
 </div></section>
 
-<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.7 adds editable personal memory stored locally in this browser, while keeping notes, tasks, calculator, voice controls and offline knowledge. It is not a generative AI model. No questions are sent to an AI service.</p></section>
+<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.8 expands the built-in offline knowledge guide and keeps personal memory, notes, tasks, calculator and voice controls. It is not a generative AI model. No questions are sent to an AI service.</p></section>
 </main>
 <script>
 const $=s=>document.querySelector(s),chat=$('#chat');
 let notes=JSON.parse(localStorage.getItem('jarvis_notes_v3')||'[]');
 let tasks=JSON.parse(localStorage.getItem('jarvis_tasks_v5')||'[]');
 let memories=JSON.parse(localStorage.getItem('jarvis_memories_v1')||'[]');
-let lastReply='JARVIS v0.7 Personal Memory is online.';
+let lastReply='JARVIS v0.8 Knowledge Upgrade is online.';
 function addMsg(t,role){const e=document.createElement('div');e.className='msg '+role;e.textContent=t;chat.appendChild(e);chat.scrollTop=chat.scrollHeight}
 function saveNotes(){localStorage.setItem('jarvis_notes_v3',JSON.stringify(notes));renderNotes()}
 function saveTasks(){localStorage.setItem('jarvis_tasks_v5',JSON.stringify(tasks));renderTasks()}
@@ -64,7 +64,7 @@ function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[?!.,]/g
 function respond(raw){const q=raw.trim(),l=norm(q);let a='';
 if(!q)return;
 if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.7 Personal Memory is ready. What would you like me to do?';
-else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: “explain artificial intelligence”, “what is gravity?”, “tell me about photosynthesis”\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Personal memory: “remember my favourite subject is science”, “show memory”, “forget memory 1”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use built-in offline responses, not a connected AI model.';
+else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: AI, machine learning, gravity, photosynthesis, computer parts, internet safety, pollution, solar system, HTML and more\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Personal memory: “remember my favourite subject is science”, “show memory”, “forget memory 1”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use a larger built-in offline knowledge guide, not a connected generative AI model. Ask one topic at a time for the best result.';
 else if(/^(what time|tell me the time|current time|time please|what's the time)/.test(l)||l==='time')a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
 else if(/(today'?s date|what date|what day|which day|date today)/.test(l))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
 else if(l==='show memory'||l==='show my memory'||l==='what do you know about me'||l==='what do you remember about me')a=memories.length?'Your personal memory on this phone:\n'+memories.map((m,i)=>(i+1)+'. '+m).join('\n'):'I have no personal memories saved yet. Try: “remember my favourite subject is science”.';
@@ -99,6 +99,20 @@ else if(l.includes('what is a computer')||l.includes('explain computer'))a='A co
 else if(l.includes('capital of india')||l.includes('what is india capital'))a='The capital of India is New Delhi.';
 else if(l.includes('what is internet')||l.includes('explain internet'))a='The internet is a worldwide network that connects computers and devices so they can share information and communicate.';
 else if(l.includes('what is water cycle')||l.includes('explain water cycle'))a='The water cycle is the continuous movement of water between Earth’s surface and the atmosphere. Its main stages include evaporation, condensation, precipitation and collection.';
+else if(l.includes('internet safety')||l.includes('stay safe online'))a='Internet safety means using the internet carefully. Keep passwords private, avoid sharing personal details, check information before trusting it, use privacy settings, and tell a trusted adult if something online makes you uncomfortable.';
+else if(l.includes('hardware')||l.includes('software'))a='Hardware means the physical parts of a computer that you can touch, such as the screen, keyboard and processor. Software means the programs and instructions that run on the device, such as apps and games.';
+else if(l.includes('what is cpu')||l.includes('central processing unit'))a='The CPU, or central processing unit, is often called the computer’s processor. It carries out instructions and helps coordinate the work of other parts of the computer.';
+else if(l.includes('what is ram')||l.includes('random access memory'))a='RAM is short-term working memory used by a device while apps and tasks are running. Information in RAM is usually cleared when the device is turned off.';
+else if(l.includes('what is an operating system')||l.includes('operating system'))a='An operating system is the main software that manages a device’s hardware and apps. Android, Windows, macOS and Linux are examples.';
+else if(l.includes('what is html')||l.includes('explain html'))a='HTML stands for HyperText Markup Language. It gives a web page its structure, such as headings, paragraphs, images, links and buttons.';
+else if(l.includes('what is javascript')||l.includes('explain javascript'))a='JavaScript is a programming language commonly used to make websites interactive. It can respond to button taps, update page content and work with web services.';
+else if(l.includes('what is pollution')||l.includes('explain pollution'))a='Pollution is the introduction of harmful substances or energy into the environment. Air, water, soil and noise pollution can affect people, wildlife and ecosystems.';
+else if(l.includes('solar system'))a='The Solar System consists of the Sun and the objects that orbit it, including eight planets, their moons, dwarf planets, asteroids and comets.';
+else if(l.includes('what is democracy')||l.includes('explain democracy'))a='Democracy is a form of government in which people have a role in choosing their leaders and influencing decisions, commonly through voting and civic participation.';
+else if(l.includes('what is a business')||l.includes('business meaning'))a='A business is an organization or activity that provides goods or services. Businesses usually aim to meet customer needs and manage their costs and income.';
+else if(l.includes('what is entrepreneur')||l.includes('who is an entrepreneur'))a='An entrepreneur is a person who starts or organizes a business or project, bringing together ideas and resources and taking responsibility for its risks.';
+else if(l.includes('human heart')||l.includes('what does the heart do'))a='The human heart is a muscular organ that pumps blood around the body. Blood carries oxygen and nutrients to cells and helps remove waste products.';
+else if(l.includes('water cycle'))a='The water cycle is the continuous movement of water between Earth’s surface and the atmosphere. Its main stages include evaporation, condensation, precipitation and collection.';
 else if(l.startsWith('explain ')||l.startsWith('tell me about ')||l.startsWith('what is ')||l.startsWith('who is '))a='I do not have a built-in explanation for that topic yet. I am running offline, so I cannot look it up. Try “help” for topics I know, or connect a real AI model later through a secure backend.';
 
 else a='I do not understand that request yet. Try asking in a different way, or type “help” to see my supported commands. I am running in offline mode and do not have a full AI brain connected.';

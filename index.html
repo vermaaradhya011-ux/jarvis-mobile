@@ -2,21 +2,37 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f"><title>JARVIS v0.8 Knowledge Upgrade</title>
+<meta name="theme-color" content="#07111f"><title>JARVIS v0.9 Animated Face</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#16445e,#07111f 65%);color:#eaf8ff;font:16px system-ui}main{max-width:780px;margin:auto;padding:15px}
 header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 28px #35dfff66}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}
 .panel{background:#0b1a29;border:1px solid #1b4962;border-radius:17px;padding:14px;margin:13px 0;box-shadow:0 8px 25px #0002}h2{font-size:12px;letter-spacing:2px;color:#62e7ff;margin:0 0 12px}
 #chat{height:31vh;min-height:220px;overflow:auto;display:flex;flex-direction:column;gap:9px}.msg{padding:11px 13px;border-radius:13px;max-width:93%;font-size:14px;white-space:pre-wrap;line-height:1.5}.bot{background:#10283a;align-self:flex-start}.user{background:#123b50;align-self:flex-end}
 .controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid button{min-height:52px}.clock{font-size:25px;font-variant-numeric:tabular-nums}.item{padding:9px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.row{display:flex;gap:8px;align-items:center}.row button{white-space:nowrap}.status{min-height:18px}.hint{color:#a9c0d0;font-size:12px}.pill{display:inline-block;border:1px solid #28647c;border-radius:99px;padding:3px 8px;color:#83eaff;font-size:11px}
+
+/* JARVIS animated face */
+.face-wrap{display:flex;justify-content:center;align-items:center;padding:7px 0 13px}
+.ai-face{width:112px;height:112px;border:2px solid #55ddf7;border-radius:50%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:radial-gradient(circle at 50% 35%,#16445e,#071522 72%);box-shadow:0 0 18px #35dfff55,inset 0 0 18px #35dfff22;transition:transform .2s,box-shadow .2s}
+.ai-eyes{display:flex;gap:27px;align-items:center;margin-top:8px}
+.ai-eye{width:10px;height:14px;border-radius:50%;background:#7af0ff;box-shadow:0 0 10px #58eaff}
+.ai-mouth{width:27px;height:5px;border-radius:8px;background:#67eaff;box-shadow:0 0 8px #58eaff;transition:all .12s}
+.face-label{font-size:10px;letter-spacing:2px;color:#7deaff;text-align:center;margin-top:6px}
+.ai-face.speaking{animation:facePulse .75s ease-in-out infinite alternate;box-shadow:0 0 30px #35dfffaa,inset 0 0 22px #35dfff44}
+.ai-face.speaking .ai-mouth{height:15px;width:20px;border-radius:45% 45% 55% 55%;animation:mouthMove .22s ease-in-out infinite alternate}
+.ai-face.listening{animation:listenPulse 1s ease-in-out infinite;box-shadow:0 0 32px #35dfffaa}
+.ai-face.listening .ai-eye{transform:scaleY(1.35)}
+@keyframes facePulse{from{transform:scale(1)}to{transform:scale(1.045)}}
+@keyframes mouthMove{from{transform:scaleY(.45)}to{transform:scaleY(1)}}
+@keyframes listenPulse{0%,100%{box-shadow:0 0 12px #35dfff66}50%{box-shadow:0 0 34px #35dfffcc}}
 </style></head>
 <body><main>
-<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.8</div><p class="pill">OFFLINE SMART MODE</p></header>
+<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.9</div><p class="pill">OFFLINE SMART MODE</p></header>
 
 <section class="panel"><h2>SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
 
 <section class="panel"><h2>SMART ASSISTANT</h2>
-<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.8 Knowledge Upgrade is online. I know more offline topics and can still manage your notes, tasks and personal memory. Type “help” for examples.</div></div>
+<div class="face-wrap"><div><div class="ai-face" id="aiFace" role="img" aria-label="JARVIS animated face"><div class="ai-eyes"><span class="ai-eye"></span><span class="ai-eye"></span></div><div class="ai-mouth"></div></div><div class="face-label" id="faceLabel">JARVIS · STANDBY</div></div></div>
+<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.9 Animated Face is online. I know more offline topics and can still manage your notes, tasks and personal memory. Type “help” for examples.</div></div>
 <div class="controls"><input id="entry" placeholder="Ask JARVIS or type a command…" autocomplete="off"><button id="send" class="primary">Send</button></div>
 <div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">Voice input depends on your browser. Android keyboard dictation is another option.</p>
 </section>
@@ -37,14 +53,14 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button>
 </div></section>
 
-<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.8 expands the built-in offline knowledge guide and keeps personal memory, notes, tasks, calculator and voice controls. It is not a generative AI model. No questions are sent to an AI service.</p></section>
+<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.9 adds an animated assistant face that reacts during listening and speech playback. It keeps the v0.8 offline knowledge guide, personal memory, notes, tasks, calculator and voice controls. It is not a generative AI model. No questions are sent to an AI service.</p></section>
 </main>
 <script>
 const $=s=>document.querySelector(s),chat=$('#chat');
 let notes=JSON.parse(localStorage.getItem('jarvis_notes_v3')||'[]');
 let tasks=JSON.parse(localStorage.getItem('jarvis_tasks_v5')||'[]');
 let memories=JSON.parse(localStorage.getItem('jarvis_memories_v1')||'[]');
-let lastReply='JARVIS v0.8 Knowledge Upgrade is online.';
+let lastReply='JARVIS v0.9 Animated Face is online.';
 function addMsg(t,role){const e=document.createElement('div');e.className='msg '+role;e.textContent=t;chat.appendChild(e);chat.scrollTop=chat.scrollHeight}
 function saveNotes(){localStorage.setItem('jarvis_notes_v3',JSON.stringify(notes));renderNotes()}
 function saveTasks(){localStorage.setItem('jarvis_tasks_v5',JSON.stringify(tasks));renderTasks()}
@@ -63,8 +79,8 @@ const v=addSub();if(i!==s.length||!Number.isFinite(v))throw Error('I could not c
 function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[?!.,]/g,' ').replace(/\s+/g,' ').trim()}
 function respond(raw){const q=raw.trim(),l=norm(q);let a='';
 if(!q)return;
-if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.7 Personal Memory is ready. What would you like me to do?';
-else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: AI, machine learning, gravity, photosynthesis, computer parts, internet safety, pollution, solar system, HTML and more\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Personal memory: “remember my favourite subject is science”, “show memory”, “forget memory 1”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use a larger built-in offline knowledge guide, not a connected generative AI model. Ask one topic at a time for the best result.';
+if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.9 is ready. What would you like me to do?';
+else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: AI, machine learning, gravity, photosynthesis, computer parts, internet safety, pollution, solar system, HTML and more\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Personal memory: “remember my favourite subject is science”, “show memory”, “forget memory 1”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use a built-in offline knowledge guide, not a connected generative AI model. Ask one topic at a time for the best result.';
 else if(/^(what time|tell me the time|current time|time please|what's the time)/.test(l)||l==='time')a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
 else if(/(today'?s date|what date|what day|which day|date today)/.test(l))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
 else if(l==='show memory'||l==='show my memory'||l==='what do you know about me'||l==='what do you remember about me')a=memories.length?'Your personal memory on this phone:\n'+memories.map((m,i)=>(i+1)+'. '+m).join('\n'):'I have no personal memories saved yet. Try: “remember my favourite subject is science”.';
@@ -87,7 +103,7 @@ else if(l.includes('open chatgpt')){window.open('https://chatgpt.com/','_blank',
 else if(l.includes('thank you')||l==='thanks')a='You are welcome. Ready for your next command.';
 
 else if(/^(how are you|how are you doing|are you okay)$/.test(l))a='I am running normally and ready to help. I work offline in this version, so I use built-in knowledge and commands.';
-else if(/^(who are you|what are you|introduce yourself)$/.test(l))a='I am JARVIS, your personal mobile assistant. In v0.6 Offline Smart Mode, I can handle selected questions, explain a few topics, calculate, save notes, manage tasks and open useful websites.';
+else if(/^(who are you|what are you|introduce yourself)$/.test(l))a='I am JARVIS, your personal mobile assistant. In v0.9 Offline Smart Mode, I can answer supported questions, calculate, save notes, manage tasks and use voice controls.';
 else if(/^(who made you|who created you|who is your creator)$/.test(l))a='You are building and customizing this JARVIS project. I am the assistant software running in your browser.';
 else if(l.includes('are you real')||l.includes('are you human'))a='I am software, not a human. I run as a webpage on your phone.';
 else if(l.includes('thank you')||l==='thanks')a='You are welcome. Ready for your next command.';
@@ -121,8 +137,9 @@ function send(){const q=$('#entry').value.trim();if(!q)return;$('#entry').value=
 $('#send').onclick=send;$('#entry').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
 document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const q=b.dataset.q;addMsg(q,'user');respond(q)});
 document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>window.open(b.dataset.url,'_blank','noopener'));
-$('#speak').onclick=()=>{if(!('speechSynthesis'in window)){$('#voiceStatus').textContent='Speech output is not supported in this browser.';return}speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(lastReply));$('#voiceStatus').textContent='Speaking the latest reply.'};
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;$('#listen').onclick=()=>{if(!SR){$('#voiceStatus').textContent='Browser voice recognition is unavailable. Try your Android keyboard microphone.';return}try{const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;r.onstart=()=>$('#voiceStatus').textContent='Listening…';r.onresult=e=>{$('#entry').value=e.results[0][0].transcript;$('#voiceStatus').textContent='Speech captured. Tap Send.'};r.onerror=e=>$('#voiceStatus').textContent='Voice input issue: '+e.error+'. Check microphone permission or use keyboard dictation.';r.start()}catch(e){$('#voiceStatus').textContent='Could not start voice input. Check microphone permission.'}};
+function setFace(mode,label){const f=$('#aiFace');f.classList.remove('speaking','listening');if(mode==='speaking'||mode==='listening')f.classList.add(mode);$('#faceLabel').textContent=label||'JARVIS · STANDBY'}
+$('#speak').onclick=()=>{if(!('speechSynthesis'in window)){$('#voiceStatus').textContent='Speech output is not supported in this browser.';setFace('','JARVIS · STANDBY');return}speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(lastReply);utterance.onstart=()=>{setFace('speaking','JARVIS · SPEAKING');$('#voiceStatus').textContent='JARVIS is speaking.'};utterance.onend=()=>{setFace('','JARVIS · STANDBY');$('#voiceStatus').textContent='Finished speaking.'};utterance.onerror=()=>{setFace('','JARVIS · STANDBY');$('#voiceStatus').textContent='Speech playback stopped.'};speechSynthesis.speak(utterance);};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;$('#listen').onclick=()=>{if(!SR){$('#voiceStatus').textContent='Browser voice recognition is unavailable. Try your Android keyboard microphone.';setFace('','JARVIS · STANDBY');return}try{const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;r.onstart=()=>{$('#voiceStatus').textContent='Listening…';setFace('listening','JARVIS · LISTENING')};r.onresult=e=>{$('#entry').value=e.results[0][0].transcript;$('#voiceStatus').textContent='Speech captured. Tap Send.';setFace('','JARVIS · STANDBY')};r.onerror=e=>{$('#voiceStatus').textContent='Voice input issue: '+e.error+'. Check microphone permission or use keyboard dictation.';setFace('','JARVIS · STANDBY')};r.onend=()=>{if($('#faceLabel').textContent==='JARVIS · LISTENING')setFace('','JARVIS · STANDBY')};r.start()}catch(e){$('#voiceStatus').textContent='Could not start voice input. Check microphone permission.';setFace('','JARVIS · STANDBY')}};
 $('#clearNotes').onclick=()=>{if(confirm('Clear all saved notes on this browser?')){notes=[];saveNotes()}};
 $('#clearTasks').onclick=()=>{if(confirm('Remove completed tasks?')){tasks=tasks.filter(t=>!t.done);saveTasks()}};
 $('#clearMemories').onclick=()=>{if(confirm('Clear all personal memories stored by JARVIS on this browser?')){memories=[];saveMemories()}};

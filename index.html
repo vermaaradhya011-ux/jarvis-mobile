@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f"><title>JARVIS v0.6 Offline Smart Mode</title>
+<meta name="theme-color" content="#07111f"><title>JARVIS v0.6.1 Offline Smart Mode</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#16445e,#07111f 65%);color:#eaf8ff;font:16px system-ui}main{max-width:780px;margin:auto;padding:15px}
 header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 28px #35dfff66}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}
@@ -11,12 +11,12 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 .controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid button{min-height:52px}.clock{font-size:25px;font-variant-numeric:tabular-nums}.item{padding:9px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.row{display:flex;gap:8px;align-items:center}.row button{white-space:nowrap}.status{min-height:18px}.hint{color:#a9c0d0;font-size:12px}.pill{display:inline-block;border:1px solid #28647c;border-radius:99px;padding:3px 8px;color:#83eaff;font-size:11px}
 </style></head>
 <body><main>
-<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.6</div><p class="pill">OFFLINE SMART MODE</p></header>
+<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.6.1</div><p class="pill">OFFLINE SMART MODE</p></header>
 
 <section class="panel"><h2>SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
 
 <section class="panel"><h2>SMART ASSISTANT</h2>
-<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.6 Offline Smart Mode is online. I can chat using built-in knowledge, explain selected topics, and manage your notes and tasks. Type “help” to see examples.</div></div>
+<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.6.1 Offline Smart Mode is online. I can chat using built-in knowledge, explain selected topics, and manage your notes and tasks. Type “help” to see examples.</div></div>
 <div class="controls"><input id="entry" placeholder="Ask JARVIS or type a command…" autocomplete="off"><button id="send" class="primary">Send</button></div>
 <div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">Voice input depends on your browser. Android keyboard dictation is another option.</p>
 </section>
@@ -35,13 +35,13 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button>
 </div></section>
 
-<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.6 adds offline conversational patterns and a small built-in knowledge guide, plus the v0.5 calculator, notes and tasks. It is not a generative AI model and cannot answer every open-ended question. No questions are sent to an AI service.</p></section>
+<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.6.1 fixes calculator question detection and retains offline conversational patterns and a small built-in knowledge guide, plus the v0.5 calculator, notes and tasks. It is not a generative AI model and cannot answer every open-ended question. No questions are sent to an AI service.</p></section>
 </main>
 <script>
 const $=s=>document.querySelector(s),chat=$('#chat');
 let notes=JSON.parse(localStorage.getItem('jarvis_notes_v3')||'[]');
 let tasks=JSON.parse(localStorage.getItem('jarvis_tasks_v5')||'[]');
-let lastReply='JARVIS v0.5 is online.';
+let lastReply='JARVIS v0.6.1 is online.';
 function addMsg(t,role){const e=document.createElement('div');e.className='msg '+role;e.textContent=t;chat.appendChild(e);chat.scrollTop=chat.scrollHeight}
 function saveNotes(){localStorage.setItem('jarvis_notes_v3',JSON.stringify(notes));renderNotes()}
 function saveTasks(){localStorage.setItem('jarvis_tasks_v5',JSON.stringify(tasks));renderTasks()}
@@ -58,7 +58,7 @@ const v=addSub();if(i!==s.length||!Number.isFinite(v))throw Error('I could not c
 function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[?!.,]/g,' ').replace(/\s+/g,' ').trim()}
 function respond(raw){const q=raw.trim(),l=norm(q);let a='';
 if(!q)return;
-if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.5 is ready. What would you like me to do?';
+if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.6.1 Offline Smart Mode is ready. What would you like me to do?';
 else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: “explain artificial intelligence”, “what is gravity?”, “tell me about photosynthesis”\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use built-in offline responses, not a connected AI model.';
 else if(/^(what time|tell me the time|current time|time please|what's the time)/.test(l)||l==='time')a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
 else if(/(today'?s date|what date|what day|which day|date today)/.test(l))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
@@ -69,7 +69,7 @@ else if(l.startsWith('add task ')||l.startsWith('create task ')||l.startsWith('r
 else if(l==='show my tasks'||l==='list tasks'||l==='my tasks'||l==='tasks')a=tasks.length?'Your tasks:\n'+tasks.map((t,i)=>(i+1)+'. '+(t.done?'[done] ':'[ ] ')+t.text).join('\n'):'You have no tasks yet.';
 else if(l.startsWith('complete task ')){const n=parseInt(l.replace('complete task ',''),10)-1;if(Number.isInteger(n)&&tasks[n]){tasks[n].done=true;saveTasks();a='Marked task '+(n+1)+' as complete.'}else a='I could not find that task number. Say “show my tasks” to see the list.'}
 else if(l.startsWith('delete task ')){const n=parseInt(l.replace('delete task ',''),10)-1;if(Number.isInteger(n)&&tasks[n]){const old=tasks.splice(n,1)[0];saveTasks();a='Deleted task: '+old.text}else a='I could not find that task number.'}
-else if(/^(calculate|what is|what's|whats|how much is|solve)\b/.test(l)){let e=q.replace(/^(calculate|what is|what's|whats|how much is|solve)\s*/i,'').replace(/[?=]$/,'').trim();e=e.replace(/\b(times|multiplied by)\b/gi,'*').replace(/\b(divided by|over)\b/gi,'/').replace(/\b(plus|added to)\b/gi,'+').replace(/\b(minus)\b/gi,'-').replace(/\bpercent of\b/gi,'%OF%');if(e.includes('%OF%')){const p=e.split('%OF%');try{a='The answer is '+(calculate(p[0])/100*calculate(p[1]))+'.'}catch(err){a=err.message}}else{try{a='The answer is '+calculate(e)+'.'}catch(err){a=err.message+' Example: “calculate 12 times (3 plus 2)” is not supported with words inside brackets; use “calculate 12 * (3 + 2)”.'}}}
+else if(/^(calculate|how much is|solve)\b/.test(l)||/^(what is|what's|whats)\s+[-+0-9.(]/.test(l)){let e=q.replace(/^(calculate|what is|what's|whats|how much is|solve)\s*/i,'').replace(/[?=]$/,'').trim();e=e.replace(/\b(times|multiplied by)\b/gi,'*').replace(/\b(divided by|over)\b/gi,'/').replace(/\b(plus|added to)\b/gi,'+').replace(/\b(minus)\b/gi,'-').replace(/\bpercent of\b/gi,'%OF%');if(e.includes('%OF%')){const p=e.split('%OF%');try{a='The answer is '+(calculate(p[0])/100*calculate(p[1]))+'.'}catch(err){a=err.message}}else{try{a='The answer is '+calculate(e)+'.'}catch(err){a=err.message+' Example: “calculate 12 times (3 plus 2)” is not supported with words inside brackets; use “calculate 12 * (3 + 2)”.'}}}
 else if(l.includes('open youtube')){window.open('https://www.youtube.com/','_blank','noopener');a='Opening YouTube.'}
 else if(l.includes('open google')){window.open('https://www.google.com/','_blank','noopener');a='Opening Google.'}
 else if(l.includes('open wikipedia')){window.open('https://www.wikipedia.org/','_blank','noopener');a='Opening Wikipedia.'}

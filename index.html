@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f"><title>JARVIS v0.6.1 Offline Smart Mode</title>
+<meta name="theme-color" content="#07111f"><title>JARVIS v0.7 Personal Memory</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#16445e,#07111f 65%);color:#eaf8ff;font:16px system-ui}main{max-width:780px;margin:auto;padding:15px}
 header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px solid #62e7ff;border-radius:50%;display:grid;place-items:center;margin:auto auto 10px;color:#62e7ff;font-size:32px;box-shadow:0 0 28px #35dfff66}h1{color:#62e7ff;letter-spacing:5px;margin:0;font-size:clamp(25px,7vw,38px)}.sub,.small{color:#91a9bc;font-size:12px;line-height:1.5}
@@ -11,12 +11,12 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 .controls,.buttons{display:flex;gap:8px;margin-top:10px}input{min-width:0;flex:1;width:100%;background:#071522;border:1px solid #24506a;border-radius:10px;color:white;padding:12px;font:inherit}button{background:#103247;color:white;border:1px solid #28718a;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.primary{background:#08718a}.buttons button{flex:1}.full{width:100%;margin-top:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid button{min-height:52px}.clock{font-size:25px;font-variant-numeric:tabular-nums}.item{padding:9px 2px;border-bottom:1px solid #18364b;font-size:13px;overflow-wrap:anywhere}.row{display:flex;gap:8px;align-items:center}.row button{white-space:nowrap}.status{min-height:18px}.hint{color:#a9c0d0;font-size:12px}.pill{display:inline-block;border:1px solid #28647c;border-radius:99px;padding:3px 8px;color:#83eaff;font-size:11px}
 </style></head>
 <body><main>
-<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.6.1</div><p class="pill">OFFLINE SMART MODE</p></header>
+<header><div class="orb">J</div><h1>J.A.R.V.I.S.</h1><div class="sub">PERSONAL MOBILE ASSISTANT · VERSION 0.7</div><p class="pill">OFFLINE SMART MODE</p></header>
 
 <section class="panel"><h2>SYSTEM CLOCK</h2><div class="clock" id="clock">--:--:--</div><div class="small" id="today"></div></section>
 
 <section class="panel"><h2>SMART ASSISTANT</h2>
-<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.6.1 Offline Smart Mode is online. I can chat using built-in knowledge, explain selected topics, and manage your notes and tasks. Type “help” to see examples.</div></div>
+<div id="chat" aria-live="polite"><div class="msg bot">JARVIS v0.7 Personal Memory is online. I can chat using built-in knowledge, explain selected topics, and manage your notes and tasks. Type “help” to see examples.</div></div>
 <div class="controls"><input id="entry" placeholder="Ask JARVIS or type a command…" autocomplete="off"><button id="send" class="primary">Send</button></div>
 <div class="buttons"><button id="listen">🎙 Speak</button><button id="speak">🔊 Speak reply</button></div><p class="small status" id="voiceStatus">Voice input depends on your browser. Android keyboard dictation is another option.</p>
 </section>
@@ -24,10 +24,12 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <section class="panel"><h2>QUICK COMMANDS</h2><div class="grid">
 <button data-q="What time is it?">🕒 Time</button><button data-q="What's today's date?">📅 Date</button>
 <button data-q="Can you calculate 125 divided by 5?">🧮 Calculator</button><button data-q="Help">❔ Help</button>
-<button data-q="Show my notes">📝 My notes</button><button data-q="Show my tasks">✅ My tasks</button>
+<button data-q="Show my notes">📝 My notes</button><button data-q="Show memory">🧠 Memory</button><button data-q="Show my tasks">✅ My tasks</button>
 </div><p class="hint">Try: “make a note that buy a notebook”, “add task finish homework”, “find note notebook”, “what is 18 percent of 250”.</p></section>
 
 <section class="panel"><h2>PHONE MEMORY · NOTES</h2><div id="notes" class="small">No saved notes.</div><button id="clearNotes" class="full">Clear all notes</button><p class="small">Notes stay in this browser on this device. Do not store passwords or sensitive information.</p></section>
+
+<section class="panel"><h2>PERSONAL MEMORY</h2><div id="memories" class="small">No personal memories saved.</div><button id="clearMemories" class="full">Clear personal memory</button><p class="small">Memory is stored only in this browser on this phone. Save harmless preferences only; never save passwords, private details or sensitive information.</p></section>
 
 <section class="panel"><h2>MY TASKS</h2><div id="tasks" class="small">No tasks yet.</div><button id="clearTasks" class="full">Clear completed tasks</button></section>
 
@@ -35,16 +37,19 @@ header{text-align:center;padding:18px 8px}.orb{width:86px;height:86px;border:1px
 <button data-url="https://www.google.com/">Google</button><button data-url="https://www.youtube.com/">YouTube</button><button data-url="https://www.wikipedia.org/">Wikipedia</button><button data-url="https://chatgpt.com/">ChatGPT</button>
 </div></section>
 
-<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.6.1 fixes calculator question detection and retains offline conversational patterns and a small built-in knowledge guide, plus the v0.5 calculator, notes and tasks. It is not a generative AI model and cannot answer every open-ended question. No questions are sent to an AI service.</p></section>
+<section class="panel"><h2>ABOUT THIS VERSION</h2><p class="small">v0.7 adds editable personal memory stored locally in this browser, while keeping notes, tasks, calculator, voice controls and offline knowledge. It is not a generative AI model. No questions are sent to an AI service.</p></section>
 </main>
 <script>
 const $=s=>document.querySelector(s),chat=$('#chat');
 let notes=JSON.parse(localStorage.getItem('jarvis_notes_v3')||'[]');
 let tasks=JSON.parse(localStorage.getItem('jarvis_tasks_v5')||'[]');
-let lastReply='JARVIS v0.6.1 is online.';
+let memories=JSON.parse(localStorage.getItem('jarvis_memories_v1')||'[]');
+let lastReply='JARVIS v0.7 Personal Memory is online.';
 function addMsg(t,role){const e=document.createElement('div');e.className='msg '+role;e.textContent=t;chat.appendChild(e);chat.scrollTop=chat.scrollHeight}
 function saveNotes(){localStorage.setItem('jarvis_notes_v3',JSON.stringify(notes));renderNotes()}
 function saveTasks(){localStorage.setItem('jarvis_tasks_v5',JSON.stringify(tasks));renderTasks()}
+function saveMemories(){localStorage.setItem('jarvis_memories_v1',JSON.stringify(memories));renderMemories()}
+function renderMemories(){const b=$('#memories');b.replaceChildren();if(!memories.length){b.textContent='No personal memories saved.';return}memories.forEach((m,i)=>{const d=document.createElement('div');d.className='item';d.textContent=(i+1)+'. '+m;b.appendChild(d)})}
 function renderNotes(){const b=$('#notes');b.replaceChildren();if(!notes.length){b.textContent='No saved notes.';return}notes.forEach((n,i)=>{const d=document.createElement('div');d.className='item';d.textContent=(i+1)+'. '+n;b.appendChild(d)})}
 function renderTasks(){const b=$('#tasks');b.replaceChildren();if(!tasks.length){b.textContent='No tasks yet.';return}tasks.forEach((t,i)=>{const d=document.createElement('div');d.className='item row';const c=document.createElement('input');c.type='checkbox';c.checked=!!t.done;c.style.flex='0 0 auto';c.onchange=()=>{tasks[i].done=c.checked;saveTasks()};const s=document.createElement('span');s.style.flex='1';s.textContent=t.text; if(t.done)s.style.textDecoration='line-through';const x=document.createElement('button');x.textContent='Delete';x.onclick=()=>{tasks.splice(i,1);saveTasks()};d.append(c,s,x);b.appendChild(d)})}
 function tick(){const d=new Date();$('#clock').textContent=d.toLocaleTimeString();$('#today').textContent=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}setInterval(tick,1000);tick();
@@ -58,10 +63,15 @@ const v=addSub();if(i!==s.length||!Number.isFinite(v))throw Error('I could not c
 function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[?!.,]/g,' ').replace(/\s+/g,' ').trim()}
 function respond(raw){const q=raw.trim(),l=norm(q);let a='';
 if(!q)return;
-if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.6.1 Offline Smart Mode is ready. What would you like me to do?';
-else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: “explain artificial intelligence”, “what is gravity?”, “tell me about photosynthesis”\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use built-in offline responses, not a connected AI model.';
+if(/^(hi|hello|hey|good morning|good afternoon|good evening)( jarvis)?$/.test(l))a='Hello! JARVIS v0.7 Personal Memory is ready. What would you like me to do?';
+else if(l==='help'||l.includes('what can you do')||l.includes('show commands'))a='Here is what I can do offline:\n• Conversation: “hello”, “how are you?”, “who are you?”\n• Learning: “explain artificial intelligence”, “what is gravity?”, “tell me about photosynthesis”\n• Quick facts: “capital of India”, “what is a computer?”\n• Time/date: “what time is it?”, “what day is it?”\n• Maths: “calculate 25 times 4”, “what is 18 percent of 250?”\n• Personal memory: “remember my favourite subject is science”, “show memory”, “forget memory 1”\n• Notes: “remember that …”, “show my notes”, “find note …”\n• Tasks: “add task …”, “show my tasks”, “complete task 1”\n• Open: “open YouTube”, “open Google”, “open Wikipedia”.\nI use built-in offline responses, not a connected AI model.';
 else if(/^(what time|tell me the time|current time|time please|what's the time)/.test(l)||l==='time')a='The time on your phone is '+new Date().toLocaleTimeString()+'.';
 else if(/(today'?s date|what date|what day|which day|date today)/.test(l))a='Today is '+new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'.';
+else if(l==='show memory'||l==='show my memory'||l==='what do you know about me'||l==='what do you remember about me')a=memories.length?'Your personal memory on this phone:\n'+memories.map((m,i)=>(i+1)+'. '+m).join('\n'):'I have no personal memories saved yet. Try: “remember my favourite subject is science”.';
+else if(l.startsWith('remember my ')||l.startsWith('remember that my ')){let fact=q.replace(/^remember that my\s*/i,'').replace(/^remember my\s*/i,'').trim();if(fact){if(/password|passcode|otp|bank|credit card|address|phone number|medical|diagnos/i.test(fact)){a='For your safety, please do not save passwords, contact details, financial information or sensitive personal details in JARVIS.'}else{const key=fact.split(/\s+(?:is|are|=)\s+/i)[0].toLowerCase();const ix=memories.findIndex(m=>m.toLowerCase().split(/\s+(?:is|are|=)\s+/i)[0]===key);if(ix>=0)memories[ix]=fact;else memories.push(fact);saveMemories();a='I saved this personal memory on this phone: '+fact}}else a='Tell me a simple preference to remember, such as “remember my favourite subject is science”.'}
+else if(l.startsWith('forget memory ')||l.startsWith('delete memory ')){const n=parseInt(l.replace(/^forget memory |^delete memory /,''),10)-1;if(Number.isInteger(n)&&memories[n]){const old=memories.splice(n,1)[0];saveMemories();a='Forgot personal memory: '+old}else a='I could not find that memory number. Say “show memory” to see the list.'}
+else if(l==='forget all memory'||l==='clear personal memory'){if(confirm('Clear all personal memories stored by JARVIS on this browser?')){memories=[];saveMemories();a='All personal memories were cleared from this browser.'}else a='I kept your personal memories.'}
+else if(l.startsWith('what is my ')||l.startsWith('what are my ')){const asked=l.replace(/^what (?:is|are) my /,'').trim();const hit=memories.find(m=>m.toLowerCase().startsWith(asked+' is ')||m.toLowerCase().startsWith(asked+' are ')||m.toLowerCase().startsWith(asked+' ='));a=hit?'You told me: '+hit:'I do not have that saved. You can teach me with “remember my '+asked+' is …”.'}
 else if(l.startsWith('remember that ')||l.startsWith('remember ')||l.startsWith('make a note ')||l.startsWith('add a note ')||l.startsWith('note that ')){let n=q.replace(/^(remember that|remember|make a note|add a note|note that)\s*/i,'').trim();if(n){notes.push(n);saveNotes();a='Saved a note on this phone: '+n}else a='Tell me what you want saved. For example: “remember that my project is JARVIS”.'}
 else if(l==='recall'||l.includes('show my notes')||l.includes('list my notes')||l.includes('what do you remember'))a=notes.length?'Here are your saved notes:\n'+notes.map((n,i)=>(i+1)+'. '+n).join('\n'):'You have no saved notes yet.';
 else if(l.startsWith('find note ')||l.startsWith('search notes for ')){const term=l.replace(/^find note |^search notes for /,'');const found=notes.filter(n=>n.toLowerCase().includes(term));a=found.length?'I found:\n'+found.map((n,i)=>(i+1)+'. '+n).join('\n'):'I could not find a note containing “'+term+'”.'}
@@ -101,5 +111,6 @@ $('#speak').onclick=()=>{if(!('speechSynthesis'in window)){$('#voiceStatus').tex
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;$('#listen').onclick=()=>{if(!SR){$('#voiceStatus').textContent='Browser voice recognition is unavailable. Try your Android keyboard microphone.';return}try{const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;r.onstart=()=>$('#voiceStatus').textContent='Listening…';r.onresult=e=>{$('#entry').value=e.results[0][0].transcript;$('#voiceStatus').textContent='Speech captured. Tap Send.'};r.onerror=e=>$('#voiceStatus').textContent='Voice input issue: '+e.error+'. Check microphone permission or use keyboard dictation.';r.start()}catch(e){$('#voiceStatus').textContent='Could not start voice input. Check microphone permission.'}};
 $('#clearNotes').onclick=()=>{if(confirm('Clear all saved notes on this browser?')){notes=[];saveNotes()}};
 $('#clearTasks').onclick=()=>{if(confirm('Remove completed tasks?')){tasks=tasks.filter(t=>!t.done);saveTasks()}};
-renderNotes();renderTasks();
+$('#clearMemories').onclick=()=>{if(confirm('Clear all personal memories stored by JARVIS on this browser?')){memories=[];saveMemories()}};
+renderNotes();renderTasks();renderMemories();
 </script></body></html>
